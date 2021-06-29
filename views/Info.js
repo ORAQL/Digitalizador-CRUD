@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, TextInput, Text, StyleSheet, ScrollView } from 'react-native'
+import { TouchableHighlight, View, TextInput, Text, StyleSheet, ScrollView } from 'react-native'
 
 import firebase from '../firebase/firebase';
 
@@ -34,19 +34,37 @@ console.log(producto)
   return(
     <View style={styles.container}>
       <View>
-	<Text>Informacion del Producto</Text>
+	<Text style={styles.field}>Codigo</Text>
+	<TextInput style={styles.textbox}></TextInput>
       </View>
       <View>
-	<Text>Codigo</Text>
-	<TextInput>{producto.Codigo}</TextInput>
+	<Text style={styles.field}>Nombre</Text>
+	<TextInput style={styles.textbox}></TextInput>
       </View>
       <View>
-	<Text>Nombre</Text>
-	<TextInput>{producto.Nombre}</TextInput>
+	<Text style={styles.field}>Precio</Text>
+	<TextInput style={styles.textbox}></TextInput>
       </View>
       <View>
-	<Text>Precio</Text>
-	<TextInput>{producto.Precio}</TextInput>
+	<View style={styles.buttonblock}>
+	  <TouchableHighlight onPress={() => search()}>
+	    <View style={styles.button}>
+	      <Text style={styles.buttontext}> Agregar </Text>
+	    </View>
+	  </TouchableHighlight>
+	  <TouchableHighlight onPress={() => search()}>
+	    <View style={styles.button}>
+	      <Text style={styles.buttontext}> Modificar </Text>
+	    </View>
+	  </TouchableHighlight>
+	</View>
+      </View> 
+      <View style={styles.exportar}>
+	<TouchableHighlight onPress={() => search()}>
+          <View style={styles.button}>
+	    <Text style={styles.buttontext}> Exportar </Text>
+          </View>
+        </TouchableHighlight>
       </View>
     </View>
   )
@@ -55,8 +73,38 @@ console.log(producto)
 const styles = StyleSheet.create({
   container: {
     flex:1,
-    justifyContent: 'center',
+    justifyContent: 'space-between',
     padding: 10
+  },
+  field: {
+    fontSize: 26,
+    textAlign: 'center'
+  },
+  textbox: {
+    height: 50,
+    marginBottom: 20,
+    margin: 16,
+    fontSize: 26,
+    borderWidth: 1,
+    borderRadius: 30
+  },
+  button: {
+    alignItems: 'center',
+    padding: 10,
+    backgroundColor: 'blue',
+    width: '100%',
+    borderRadius: 10,
+  },
+  buttonblock: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly'
+  },
+  buttontext: {
+    color: 'white',
+  },
+  exportar: {
+    paddingHorizontal: 50,
+    paddingTop: 10
   }
 })
 

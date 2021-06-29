@@ -33,7 +33,7 @@ function MyStack() {
       <Stack.Screen
         name="Information"
         component={Info}
-        options={{ title: "Datos" }}
+        options={{ title: "Informacion del producto" }}
       />
     </Stack.Navigator>
   );
