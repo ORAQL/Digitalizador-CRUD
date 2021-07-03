@@ -13,7 +13,8 @@ const Info = (props)=> {
   const [lista, setLista] = useState([])
   
   useEffect(() => {
-      firebase.db.collection("Productos").onSnapshot((querySnapshot) => {
+      console.log('codigo del producto: ' + producto.Codigo)
+      firebase.db.collection("Productos").where('Codigo', '==', producto.Codigo).onSnapshot((querySnapshot) => {
         const productos = [];
 	querySnapshot.docs.forEach((doc) => {
 	  const { Codigo, Nombre, Precio } = doc.data();
@@ -29,7 +30,7 @@ const Info = (props)=> {
     }, []);
 
   
-console.log(producto) 
+console.log(lista) 
 
   return(
     <View style={styles.container}>
