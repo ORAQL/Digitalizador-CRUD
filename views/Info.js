@@ -1,20 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { TouchableHighlight, View, TextInput, Text, StyleSheet, ScrollView } from 'react-native'
+import { TouchableHighlight, View, TextInput, Text, StyleSheet } from 'react-native'
 
 import firebase from '../firebase/firebase';
 
 const Info = (props)=> {
-  const [producto, setProducto] = useState({
-    Codigo: props.route.params.codigo,
-    Nombre: '',
-    Precio: ''
-  })
+  const codigo = props.route.params.codigo
 
   const [lista, setLista] = useState([])
   
   useEffect(() => {
-      console.log('codigo del producto: ' + producto.Codigo)
-      firebase.db.collection("Productos").where('Codigo', '==', producto.Codigo).onSnapshot((querySnapshot) => {
+      firebase.db.collection("Productos").where('Codigo', '==', codigo).onSnapshot((querySnapshot) => {
         const productos = [];
 	querySnapshot.docs.forEach((doc) => {
 	  const { Codigo, Nombre, Precio } = doc.data();
@@ -29,22 +24,28 @@ const Info = (props)=> {
       });
     }, []);
 
+  const esProducto = (producto) => {
+    return producto.Codigo === codigo;
+  }
   
-console.log(lista) 
+  const consulta = lista.find(esProducto);
 
+  console.log(consulta)
+  
   return(
-    <View style={styles.container}>
+    null
+  /*  <View style={styles.container}>
       <View>
 	<Text style={styles.field}>Codigo</Text>
-	<TextInput style={styles.textbox}></TextInput>
+	<TextInput style={styles.textbox} value={consulta.Codigo} />
       </View>
       <View>
 	<Text style={styles.field}>Nombre</Text>
-	<TextInput style={styles.textbox}></TextInput>
+	<TextInput style={styles.textbox} value={consulta.Nombre} />
       </View>
       <View>
 	<Text style={styles.field}>Precio</Text>
-	<TextInput style={styles.textbox}></TextInput>
+	<TextInput style={styles.textbox} value={consulta.Precio} />
       </View>
       <View>
 	<View style={styles.buttonblock}>
@@ -67,7 +68,7 @@ console.log(lista)
           </View>
         </TouchableHighlight>
       </View>
-    </View>
+    </View>*/
   )
 }
 
@@ -97,7 +98,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   buttonblock: {
-    flexDirection: 'row',
+    lexDirection: 'row',
     justifyContent: 'space-evenly'
   },
   buttontext: {
