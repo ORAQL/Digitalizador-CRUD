@@ -4,7 +4,7 @@ import { TouchableHighlight, View, TextInput, Text, StyleSheet } from 'react-nat
 import firebase from '../firebase/firebase';
 
 const Info = (props)=> {
-  const codigo = props.route.params.codigo
+  const codigo = props.route.params.data
 
   const [lista, setLista] = useState([])
   
@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
   buttonblock: {
-    lexDirection: 'row',
+    alignItems: 'center' ,
     justifyContent: 'space-evenly'
   },
   buttontext: {

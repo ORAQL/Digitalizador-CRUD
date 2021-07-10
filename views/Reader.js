@@ -1,46 +1,38 @@
-import React, { useState } from "react";
-import { StatusBar } from "expo-status-bar";
-import { Text, TouchableHighlight, StyleSheet, TextInput, View, Alert} from "react-native"
+import React, { useState, useEffect } from "react";
+import { Text, StyleSheet, View } from "react-native"
+import { BarCodeScanner } from 'expo-barcode-scanner'
 
 const Reader = (props) => {
-  const [codigo, setCodigo] = useState({
-    codigo: ""
-  })
-  
-  const handleCodigo = (codigo, value) => {
-    setCodigo({[codigo]: value})
+  const [hasPermission, setHasPermission] = useState(null);
+  const [scanned, setScanned] = useState(false);
+
+  useEffect(() => {
+    (async () => {
+      const { status } = await BarCodeScanner.requestPermissionsAsync();
+      setHasPermission(status === 'granted');
+    })();
+  }, []);
+
+  const handleBarCodeScanned = ({ data }) => {
+    setScanned(true);
+    props.navigation.navigate('Information', data)
+  };
+
+  if (hasPermission === null) {
+    return <Text>Requesting for camera permission</Text>;
+  }
+  if (hasPermission === false) {
+    return <Text>No access to camera</Text>;
   }
 
-  const search = () => {
-    if(codigo === "") {
-      Alert.alert('Alerta','Campo vacio. Ingrese un codigo',[{text: "OK", onPress: () => console.log("OK Pressed")}])
-    }else{
-      props.navigation.navigate('Information',codigo)
-    }
-  }
-
-  return(
+  return (
     <View style={styles.container}>
-      <StatusBar/>
-      <View style={styles.top}/>
-      <View style={styles.middle}>
-	<TextInput 
-	  style={styles.code} 
-	  keyboardType='numeric' 
-	  placeholder='Codigo' 
-	  textAlign='center'
-	  onChangeText={(value) => {handleCodigo('codigo', value)}}
-	  />
-	    <TouchableHighlight onPress={() => search()}>
-	      <View style={styles.button}>
-		<Text style={styles.buttontext}> Buscar </Text>
-	      </View>
-	    </TouchableHighlight>
-      </View>
-      <View style={styles.bottom}/>	
+      <BarCodeScanner
+        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+        style={StyleSheet.absoluteFillObject}
+      />
     </View>
-  )
-
+  );
 }
 
 const styles = StyleSheet.create({
